@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ask the Australians! — Tanya Orang Australia!</title>
+  
+  <style>
+    /* Zero-dependency pure CSS: instant render with no network latency */
+    :root {
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --primary-light: #ccfbf1;
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 10px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      min-height: 98vh;
+      justify-content: space-between;
+    }
+
+    /* Compact Header */
+    header {
+      text-align: center;
+      padding: 4px 0 6px 0;
+    }
+
+    .badge-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #dcfce7;
+      color: #166534;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-bottom: 3px;
+    }
+
+    h1 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      display: block;
+    }
+
+    /* Category Navigation */
+    .cat-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      margin: 6px 0;
+    }
+
+    .cat-btn {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 2px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      text-align: center;
+      line-height: 1.1;
+      transition: all 0.15s ease;
+    }
+
+    .cat-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 6px rgba(13, 148, 136, 0.3);
+    }
+
+    .cat-count {
+      display: block;
+      font-size: 9px;
+      font-weight: 500;
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+
+    /* Progress & Counter */
+    .progress-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 10px;
+      margin-bottom: 8px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .category-label {
+      color: var(--primary-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: inline-block;
+    }
+
+    .counter-pill {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #475569;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 5px;
+      background: #f1f5f9;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0d9488, #10b981);
+      width: 2%;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    /* Card Styling */
+    .card-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .question-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 250px;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .tag-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--accent-light);
+      color: #92400e;
+    }
+
+    .audio-btn {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      color: #0369a1;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .audio-btn:active {
+      transform: scale(0.96);
+      background: #e0f2fe;
+    }
+
+    .card-content {
+      padding: 10px 0;
+      text-align: center;
+      margin: auto 0;
+    }
+
+    .label-speak {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 4px;
+    }
+
+    .question-en {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .divider-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 9px;
+      color: #94a3b8;
+      font-weight: 600;
+      margin: 6px 0;
+    }
+
+    .divider-line {
+      height: 1px;
+      width: 28px;
+      background: #e2e8f0;
+    }
+
+    .question-id {
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      font-style: italic;
+      background: #ecfdf5;
+      border: 1px solid #d1fae5;
+      padding: 6px 10px;
+      border-radius: 10px;
+      line-height: 1.3;
+    }
+
+    .coaching-tip {
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      padding: 6px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      color: #78350f;
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      text-align: left;
+      margin-top: 6px;
+    }
+
+    /* Completed View */
+    .complete-card {
+      display: none;
+      background: #ffffff;
+      border: 1px solid #a7f3d0;
+      border-radius: var(--radius);
+      padding: 24px 16px;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 250px;
+    }
+
+    .complete-icon {
+      font-size: 34px;
+      margin-bottom: 6px;
+    }
+
+    /* Action Controls */
+    .controls {
+      display: flex;
+      gap: 6px;
+      margin: 8px 0;
+    }
+
+    .btn-prev {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: #475569;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .btn-prev:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-next {
+      flex: 1;
+      background: linear-gradient(135deg, #0d9488, #059669);
+      color: #ffffff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(13, 148, 136, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .btn-next:active, .btn-prev:active {
+      transform: scale(0.98);
+    }
+
+    /* Fast Reactions Bottom Box */
+    .cheatsheet-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 6px 8px;
+    }
+
+    .sheet-title {
+      font-size: 9px;
+      font-weight: 800;
+      color: #475569;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .phrase-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+
+    .phrase-chip {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 2px;
+      text-align: center;
+      cursor: pointer;
+      line-height: 1.1;
+    }
+
+    .phrase-chip:active {
+      background: #ccfbf1;
+      border-color: #5eead4;
+    }
+
+    .phrase-en {
+      font-size: 10px;
+      font-weight: 800;
+      color: #0f766e;
+    }
+
+    .phrase-id {
+      font-size: 8px;
+      color: #64748b;
+      margin-top: 1px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 9px;
+      color: #94a3b8;
+      padding: 4px 0 2px 0;
+    }
+
+    /* Non-intrusive alert toast */
+    #toast {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.92);
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header>
+      <div class="badge-top">
+        <span>Widhya Asih</span>
+        <span>•</span>
+        <span>English Club</span>
+        <span>🇦🇺 🇮🇩</span>
+      </div>
+      <h1>Ask the Australians!</h1>
+      <span class="subtitle">Tanya Orang Australia!</span>
+    </header>
+
+    <!-- Compact Categories Nav -->
+    <nav class="cat-nav" aria-label="Category Selector">
+      <button class="cat-btn active" id="tab-all" onclick="selectCategory('all')">
+        🎲 Semua
+        <span class="cat-count">(45)</span>
+      </button>
+      <button class="cat-btn" id="tab-easy" onclick="selectCategory('easy')">
+        🟢 Mudah
+        <span class="cat-count">(15)</span>
+      </button>
+      <button class="cat-btn" id="tab-funny" onclick="selectCategory('funny')">
+        😂 Lucu
+        <span class="cat-count">(15)</span>
+      </button>
+      <button class="cat-btn" id="tab-get_to_know" onclick="selectCategory('get_to_know')">
+        🤝 Kenalan
+        <span class="cat-count">(15)</span>
+      </button>
+    </nav>
+
+    <!-- Progress Tracker -->
+    <section class="progress-box">
+      <div class="progress-info">
+        <span class="category-label" id="currentCategoryText">
+          <span class="dot"></span>
+          <span>Semua Kategori</span>
+        </span>
+        <span class="counter-pill" id="counterDisplay">
+          1 / 45
+        </span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+      </div>
+    </section>
+
+    <!-- Question Playground -->
+    <main class="card-wrap">
+      
+      <div class="question-card" id="questionCard">
+        <!-- Top bar of the card -->
+        <div class="card-header">
+          <span class="tag-badge" id="cardCategoryBadge">🟢 Mudah</span>
+          <button class="audio-btn" id="listenBtn" onclick="speakQuestion()" title="Dengarkan pengucapan">
+            <span id="audioBtnText">Dengar 🔊</span>
+          </button>
+        </div>
+
+        <!-- Center content -->
+        <div class="card-content">
+          <p class="label-speak">Ucapkan / Ask aloud:</p>
+          <div class="question-en" id="textEnglish">"Do you like eating Vegemite?"</div>
+          
+          <div class="divider-text">
+            <span class="divider-line"></span>
+            <span>Arti Bahasa Indonesia</span>
+            <span class="divider-line"></span>
+          </div>
+
+          <div class="question-id" id="textIndonesian">"Apakah kamu suka makan Vegemite?"</div>
+        </div>
+
+        <!-- Conversation Tip -->
+        <div class="coaching-tip">
+          <span>💡</span>
+          <div>
+            <strong>Tips:</strong>
+            <span id="textTip">Tanya: 'What does it taste like?' (Seperti apa rasanya?)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completion View -->
+      <div class="complete-card" id="completeCard">
+        <div class="complete-icon">🎉</div>
+        <h2 style="font-size: 16px; font-weight:800; margin-bottom: 4px;">Hebat Sekali! Good Job!</h2>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Semua pertanyaan di deck ini sudah selesai.</p>
+        <button class="btn-next" style="width: 100%; margin-bottom: 6px;" onclick="resetCurrentCategory()">
+          🔄 Acak Ulang Kategori Ini
+        </button>
+        <button class="btn-prev" style="width: 100%; justify-content: center;" onclick="selectCategory('all')">
+          🎲 Coba Semua Pertanyaan (45)
+        </button>
+      </div>
+
+    </main>
+
+    <!-- Controls -->
+    <div class="controls" id="cardControls">
+      <button class="btn-prev" id="prevBtn" onclick="prevQuestion()" disabled>
+        <span>◀</span> Balik
+      </button>
+      <button class="btn-next" id="nextBtn" onclick="nextQuestion()">
+        Pertanyaan Berikutnya <span>▶</span>
+      </button>
+    </div>
+
+    <!-- Quick Reaction Cheatsheet -->
+    <section class="cheatsheet-box">
+      <div class="sheet-title">
+        <span>🗣️ Respon Balik (Sentuh untuk dengar):</span>
+      </div>
+      <div class="phrase-grid">
+        <div class="phrase-chip" onclick="speakQuickPhrase('Really? That is so cool!')">
+          <div class="phrase-en">"So cool!"</div>
+          <div class="phrase-id">Keren!</div>
+        </div>
+        <div class="phrase-chip" onclick="speakQuickPhrase('Me too!')">
+          <div class="phrase-en">"Me too!"</div>
+          <div class="phrase-id">Aku juga!</div>
+        </div>
+        <div class="phrase-chip" onclick="speakQuickPhrase('Why is that?')">
+          <div class="phrase-en">"Why's that?"</div>
+          <div class="phrase-id">Kenapa?</div>
+        </div>
+        <div class="phrase-chip" onclick="speakQuickPhrase('Tell me more!')">
+          <div class="phrase-en">"Tell more!"</div>
+          <div class="phrase-id">Ceritain!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      Semangat belajar bahasa Inggris bersama relawan Australia! 🐨🌺
+    </footer>
+
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    // Pure inline database - zero network fetch required
+    const QUESTIONS = [
+      // 15 EASY (Mudah)
+      {
+        id: 1,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Do you like eating Vegemite?',
+        id_text: 'Apakah kamu suka makan Vegemite?',
+        tip: "Tanya: 'What does it taste like?' (Seperti apa rasanya?)"
+      },
+      {
+        id: 2,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Have you ever seen a wild kangaroo?',
+        id_text: 'Pernahkah kamu melihat kanguru liar?',
+        tip: "Tanya: 'Where did you see it?' (Di mana kamu melihatnya?)"
+      },
+      {
+        id: 3,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Do you like spicy Indonesian sambal?',
+        id_text: 'Apakah kamu suka sambal pedas khas Indonesia?',
+        tip: "Tanya: 'Can you handle spicy food?' (Bisa makan pedas?)"
+      },
+      {
+        id: 4,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Can you surf on ocean waves?',
+        id_text: 'Apakah kamu bisa berselancar di ombak laut?',
+        tip: "Tanya: 'Is surfing difficult to learn?' (Apakah surfing sulit dipelajari?)"
+      },
+      {
+        id: 5,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Do you have a pet dog or cat at home?',
+        id_text: 'Apakah kamu punya anjing atau kucing di rumah?',
+        tip: "Tanya nama peliharaannya: 'What is your pet\'s name?'"
+      },
+      {
+        id: 6,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Is Australia very hot in December?',
+        id_text: 'Apakah Australia sangat panas di bulan Desember?',
+        tip: "Tahukah kamu? Desember di Australia adalah musim panas (summer)!"
+      },
+      {
+        id: 7,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Do you like drinking iced tea or Milo?',
+        id_text: 'Apakah kamu suka minum es teh manis atau Milo?',
+        tip: "Tanya: 'Do you drink Milo hot or cold in Australia?'"
+      },
+      {
+        id: 8,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Have you visited Bali before this trip?',
+        id_text: 'Pernahkah kamu berkunjung ke Bali sebelum perjalanan ini?',
+        tip: "Tanya: 'Which places have you visited in Bali?'"
+      },
+      {
+        id: 9,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Do you like listening to pop music?',
+        id_text: 'Apakah kamu suka mendengarkan musik pop?',
+        tip: "Tanya penyanyi favorit: 'Who is your favourite singer?'"
+      },
+      {
+        id: 10,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Can you swim well?',
+        id_text: 'Apakah kamu bisa berenang dengan baik?',
+        tip: "Tanya: 'Do you prefer the beach or a swimming pool?'"
+      },
+      {
+        id: 11,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Do you play any sports on weekends?',
+        id_text: 'Apakah kamu berolahraga di akhir pekan?',
+        tip: "Tanya: 'Do you like Australian AFL footy or cricket?'"
+      },
+      {
+        id: 12,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Have you ever held a koala?',
+        id_text: 'Pernahkah kamu memegang atau memeluk koala?',
+        tip: "Tanya: 'Are koalas soft or smelly?' (Lembut atau bau?)"
+      },
+      {
+        id: 13,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Do you live near the beach in Australia?',
+        id_text: 'Apakah kamu tinggal di dekat pantai di Australia?',
+        tip: "Tanya kota asalnya: 'Which Australian city are you from?'"
+      },
+      {
+        id: 14,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Do you enjoy cooking breakfast?',
+        id_text: 'Apakah kamu suka memasak sarapan pagi?',
+        tip: "Tanya: 'Pancakes, toast, or eggs?'"
+      },
+      {
+        id: 15,
+        cat: 'easy',
+        badge: '🟢 Mudah',
+        en: 'Is this your first time at Widhya Asih?',
+        id_text: 'Apakah ini kunjungan pertamamu ke Widhya Asih?',
+        tip: "Ucapkan ramah: 'Welcome to Widhya Asih! We are happy you came!'"
+      },
+
+      // 15 FUNNY (Lucu)
+      {
+        id: 16,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Have you ever been chased by a magpie bird?',
+        id_text: 'Pernahkah kamu dikejar oleh burung magpie?',
+        tip: "Magpie di Australia suka menukik mengejar orang saat musim semi!"
+      },
+      {
+        id: 17,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Do you wear flip-flops even when it is raining?',
+        id_text: 'Apakah kamu memakai sandal jepit saat hujan?',
+        tip: "Di Australia, sandal jepit disebut 'thongs'!"
+      },
+      {
+        id: 18,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Are you secretly scared of spiders?',
+        id_text: 'Apakah kamu diam-diam takut pada laba-laba?',
+        tip: "Tanya: 'Have you seen a big Huntsman spider in your bedroom?'"
+      },
+      {
+        id: 19,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Can you laugh like a kookaburra bird?',
+        id_text: 'Bisakah kamu menirukan tawa burung kookaburra?',
+        tip: "Tantang mereka: 'Please imitate it for us!' (Tolong tirukan!)"
+      },
+      {
+        id: 20,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Have you eaten a whole packet of Tim Tams at once?',
+        id_text: 'Pernahkah kamu makan satu bungkus Tim Tam sekaligus?',
+        tip: "Tanya: 'Have you ever tried doing a Tim Tam Slam?'"
+      },
+      {
+        id: 21,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Do you talk to animals when no one is watching?',
+        id_text: 'Apakah kamu suka bicara pada hewan saat sendirian?',
+        tip: "Bercanda: 'Do they understand what you say?'"
+      },
+      {
+        id: 22,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Have you ever tried to ride a kangaroo?',
+        id_text: 'Pernahkah kamu mencoba menaiki seekor kanguru?',
+        tip: "Banyak orang luar negeri bercanda bahwa orang Aussie naik kanguru ke sekolah!"
+      },
+      {
+        id: 23,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Can you dance the Poco-Poco or Macarena?',
+        id_text: 'Bisakah kamu menari tarian Poco-Poco atau Macarena?',
+        tip: "Ajak mereka: 'Can we dance together later today?'"
+      },
+      {
+        id: 24,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Do you sing very loudly in the shower?',
+        id_text: 'Apakah kamu bernyanyi sangat kencang di kamar mandi?',
+        tip: "Tanya: 'What song is your shower anthem?'"
+      },
+      {
+        id: 25,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Have you ever put Vegemite on your face by mistake?',
+        id_text: 'Pernahkah kamu tidak sengaja mengoles Vegemite ke mukamu?',
+        tip: "Vegemite berwarna cokelat sangat gelap dan pekat!"
+      },
+      {
+        id: 26,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Are you afraid of the dark?',
+        id_text: 'Apakah kamu takut berada di tempat gelap?',
+        tip: "Tanya: 'Do you sleep with a night light on?'"
+      },
+      {
+        id: 27,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Can you say "G\'day mate, how ya going?"',
+        id_text: 'Bisakah kamu menyapa dengan aksen: "G\'day mate, how ya going?"',
+        tip: "Ucapkan bersama-sama sambil tersenyum!"
+      },
+      {
+        id: 28,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Have you eaten food that fell on the floor?',
+        id_text: 'Pernahkah kamu makan camilan yang jatuh ke lantai?',
+        tip: "Tanya: 'Do you follow the 5-second rule?' (Aturan 5 detik)"
+      },
+      {
+        id: 29,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Do you sleep with a stuffed animal or teddy bear?',
+        id_text: 'Apakah kamu masih tidur memeluk boneka?',
+        tip: "Tanya: 'What is your teddy bear\'s name?'"
+      },
+      {
+        id: 30,
+        cat: 'funny',
+        badge: '😂 Lucu',
+        en: 'Have you ever screamed because of a tiny house gecko?',
+        id_text: 'Pernahkah kamu berteriak kaget karena cicak di dinding?',
+        tip: "Katakan: 'In Bali, geckos and cicaks are our good friends!'"
+      },
+
+      // 15 GET TO KNOW US (Kenalan)
+      {
+        id: 31,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Do you have brothers or sisters?',
+        id_text: 'Apakah kamu punya saudara laki-laki atau perempuan?',
+        tip: "Tanya: 'Are they older or younger than you?'"
+      },
+      {
+        id: 32,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Did you like going to school as a teenager?',
+        id_text: 'Apakah kamu menikmati masa-masa sekolahmu dulu?',
+        tip: "Tanya mata pelajaran favoritnya: 'What subject was your favourite?'"
+      },
+      {
+        id: 33,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Do you play a musical instrument like guitar or piano?',
+        id_text: 'Apakah kamu bisa main alat musik seperti gitar atau piano?',
+        tip: "Ceritakan alat musik yang suka kamu mainkan di Widhya Asih!"
+      },
+      {
+        id: 34,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Have you traveled to many different countries?',
+        id_text: 'Apakah kamu sudah pernah bepergian ke banyak negara?',
+        tip: "Tanya: 'Which country did you like the most?'"
+      },
+      {
+        id: 35,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Do you like watching movies with your family?',
+        id_text: 'Apakah kamu suka menonton film bareng keluarga?',
+        tip: "Tanya: 'What is your all-time favourite movie?'"
+      },
+      {
+        id: 36,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Is coffee an important part of your morning?',
+        id_text: 'Apakah kopi adalah bagian penting dari pagimu?',
+        tip: "Di Australia, minuman kopi Flat White sangat terkenal!"
+      },
+      {
+        id: 37,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Do you prefer sunny summer over cold winter?',
+        id_text: 'Apakah kamu lebih suka musim panas daripada musim dingin?',
+        tip: "Katakan: 'In Bali, every day is warm and sunny!'"
+      },
+      {
+        id: 38,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Have you learned any words in Bahasa Indonesia?',
+        id_text: 'Apakah kamu sudah belajar kata-kata bahasa Indonesia?',
+        tip: "Ajari kata baru: 'Sama-sama', 'Enak sekali', atau 'Terima kasih'!"
+      },
+      {
+        id: 39,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Do you enjoy camping outside in nature?',
+        id_text: 'Apakah kamu suka berkemah di alam terbuka?',
+        tip: "Tanya: 'Have you ever toasted marshmallows on a campfire?'"
+      },
+      {
+        id: 40,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Do you have a hobby that you really love?',
+        id_text: 'Apakah kamu punya hobi yang sangat kamu sukai?',
+        tip: "Tanya: 'How long have you done that hobby?'"
+      },
+      {
+        id: 41,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Did you fly more than 5 hours to visit Bali?',
+        id_text: 'Apakah kamu terbang lebih dari 5 jam untuk sampai ke Bali?',
+        tip: "Penerbangan dari Sydney atau Melbourne ke Bali memakan waktu ~6 jam."
+      },
+      {
+        id: 42,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Do you like reading books or listening to podcasts?',
+        id_text: 'Apakah kamu suka membaca buku atau menyimak podcast?',
+        tip: "Tanya: 'What topic do you enjoy learning about?'"
+      },
+      {
+        id: 43,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Do you enjoy trying Balinese street foods?',
+        id_text: 'Apakah kamu suka mencoba jajanan kaki lima di Bali?',
+        tip: "Rekomendasikan: Pisang goreng, bakso, atau sate lilit!"
+      },
+      {
+        id: 44,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Would you like to visit Indonesia again in the future?',
+        id_text: 'Apakah kamu ingin kembali berlibur ke Indonesia di masa depan?',
+        tip: "Katakan: 'You will always be welcome here!'"
+      },
+      {
+        id: 45,
+        cat: 'get_to_know',
+        badge: '🤝 Kenalan',
+        en: 'Are you excited to chat with us today?',
+        id_text: 'Apakah kamu bersemangat untuk mengobrol bersama kami hari ini?',
+        tip: "Tersenyumlah dan katakan: 'Thank you for visiting us!'"
+      }
+    ];
+
+    // State Variables
+    let currentCategory = 'all';
+    let currentDeck = [];
+    let currentIndex = 0;
+
+    // Fisher-Yates pure in-memory shuffle
+    function shuffle(array) {
+      const arr = array.slice();
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+      }
+      return arr;
+    }
+
+    function initDeck(category) {
+      let pool = [];
+      if (category === 'all') {
+        pool = QUESTIONS.slice();
+      } else {
+        pool = QUESTIONS.filter(item => item.cat === category);
+      }
+      currentDeck = shuffle(pool);
+      currentIndex = 0;
+    }
+    function selectCategory(categoryKey) {
+      currentCategory = categoryKey;
+      
+      // Update Tab Styles
+      ['all', 'easy', 'funny', 'get_to_know'].forEach(tab => {
+        const el = document.getElementById('tab-' + tab);
+        if (el) {
+          if (tab === categoryKey) {
+            el.classList.add('active');
+          } else {
+            el.classList.remove('active');
+          }
+        }
+      });
+
+      // Update Label
+      const label = document.getElementById('currentCategoryText');
+      if (categoryKey === 'all') {
+        label.innerHTML = '<span class="dot"></span> Semua Kategori';
+      } else if (categoryKey === 'easy') {
+        label.innerHTML = '<span class="dot" style="background:#10b981;"></span> Kategori Mudah';
+      } else if (categoryKey === 'funny') {
+        label.innerHTML = '<span class="dot" style="background:#f59e0b;"></span> Kategori Lucu';
+      } else {
+        label.innerHTML = '<span class="dot" style="background:#0284c7;"></span> Kategori Kenalan';
+      }
+
+      initDeck(categoryKey);
+      showCardView();
+      renderCurrentQuestion();
+    }
+
+    function renderCurrentQuestion() {
+      if (currentIndex >= currentDeck.length) {
+        showCompletionView();
+        return;
+      }
+
+      const q = currentDeck[currentIndex];
+      const card = document.getElementById('questionCard');
+
+      // Visual flash effect
+      card.style.opacity = '0.3';
+      card.style.transform = 'translateY(3px)';
+
+      setTimeout(() => {
+        document.getElementById('cardCategoryBadge').textContent = q.badge;
+        document.getElementById('textEnglish').textContent = `"${q.en}"`;
+        document.getElementById('textIndonesian').textContent = `"${q.id_text}"`;
+        document.getElementById('textTip').textContent = q.tip;
+
+        const total = currentDeck.length;
+        const currentPos = currentIndex + 1;
+        document.getElementById('counterDisplay').textContent = `${currentPos} / ${total}`;
+        
+        const pct = Math.max(3, Math.round((currentPos / total) * 100));
+        document.getElementById('progressBarFill').style.width = pct + '%';
+
+        document.getElementById('prevBtn').disabled = (currentIndex === 0);
+
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 60);
+    }
+
+    function nextQuestion() {
+      if (currentIndex < currentDeck.length - 1) {
+        currentIndex++;
+        renderCurrentQuestion();
+      } else {
+        showCompletionView();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderCurrentQuestion();
+      }
+    }
+
+    function resetCurrentCategory() {
+      initDeck(currentCategory);
+      showCardView();
+      renderCurrentQuestion();
+    }
+
+    function showCardView() {
+      document.getElementById('questionCard').style.display = 'flex';
+      document.getElementById('completeCard').style.display = 'none';
+      document.getElementById('cardControls').style.display = 'flex';
+    }
+
+    function showCompletionView() {
+      document.getElementById('questionCard').style.display = 'none';
+      document.getElementById('completeCard').style.display = 'flex';
+      document.getElementById('cardControls').style.display = 'none';
+    }
+
+    // Web Speech API
+    function playAudio(text) {
+      if (!('speechSynthesis' in window)) {
+        showToast("Browser tidak mendukung suara audio.");
+        return;
+      }
+
+      try {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.rate = 0.88; // Slower cadence for easy learning
+        utter.lang = 'en-US';
+
+        const voices = window.speechSynthesis.getVoices();
+        if (voices && voices.length > 0) {
+          const ausVoice = voices.find(v => v.lang.includes('AU') || v.lang.includes('en-AU'));
+          const enVoice = voices.find(v => v.lang.startsWith('en'));
+          if (ausVoice) utter.voice = ausVoice;
+          else if (enVoice) utter.voice = enVoice;
+        }
+
+        const btnText = document.getElementById('audioBtnText');
+        const prevLabel = btnText.textContent;
+        utter.onstart = function() {
+          btnText.textContent = "Bicara... 🔊";
+        };
+        utter.onend = utter.onerror = function() {
+          btnText.textContent = prevLabel;
+        };
+
+        window.speechSynthesis.speak(utter);
+      } catch (err) {
+        showToast("Audio belum siap.");
+      }
+    }
+
+    function speakQuestion() {
+      if (currentIndex < currentDeck.length) {
+        playAudio(currentDeck[currentIndex].en);
+      }
+    }
+
+    function speakQuickPhrase(phrase) {
+      playAudio(phrase);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+      }, 2200);
+    }
+
+    // Boot immediately without waiting on network
+    (function init() {
+      selectCategory('all');
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+      }
+    })();
+  </script>
+</body>
+</html>
